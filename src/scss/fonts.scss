@@ -1,0 +1,8 @@
+$fontsPath: '../assets/fonts/';
+
+@font-face{
+    $name: "Roboto.ttf";
+    font-family: roboto;
+    font-weight: 400;
+    src: url($fontsPath+$name) format("true-type");
+}
