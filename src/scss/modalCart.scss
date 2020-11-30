@@ -9,11 +9,15 @@
     align-items: center;justify-content: center;
     .modal-window{
         width: 700px;
-        height: 400px;
+        padding: 20px 0;
         background-color: #fff;
+        position: relative;
+
 
         &-close{
-            float: right;
+            position: absolute;
+            top: -27px;
+            right: -27px;
             width: 25px;
             height: 25px;
             display: flex;
@@ -23,5 +27,28 @@
             font-size: 22px;
             cursor: pointer;
         }
+        .cart-wrapper{
+            margin: 0 auto;
+            max-width: 600px;
+            .cart-item{
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                padding: 7px 0;
+
+
+                &-title,&-author,&-price, &-count{
+                    flex: 1;
+                }
+                &-price{
+                    max-width: 50px;
+                }
+                &-count{
+                    max-width: 120px;
+                    text-align: center;
+                }
+            }
+        }
+        
     }
 }

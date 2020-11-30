@@ -30,6 +30,9 @@ export const store = new Vuex.Store({
         cartToggle: ctx => {
             ctx.commit("cartToggle");
         },
+        removeCartItem: (ctx,id)=>{
+            ctx.commit("removeCartItem", id);
+        }
     },
     mutations: {
         setBooks: (state, payload) => {
@@ -37,11 +40,25 @@ export const store = new Vuex.Store({
             state.page++;
         },
         pushItem: (state, payload) => {
-            state.cart.push(payload);
+            let index = state.cart.findIndex(item=>item.id==payload.id);
+
+
+            console.log(index == true);
+            if(index != -1)
+            {
+                state.cart[index].count++;
+            }
+            else{
+                state.cart.push({count: 1, ...payload});
+            }
+            
         },
         cartToggle: (state) => {
             state.cartShow = !state.cartShow;
         },
+        removeCartItem: (state, payload)=>{
+            state.cart = state.cart.filter(item=>item.id != payload);
+        }
     },
     getters: {
         books: state => state.books && state.books.books,
