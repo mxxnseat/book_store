@@ -15,7 +15,10 @@ export const store = new Vuex.Store({
         fetchBook: ctx => {
             axios.get("/books.json")
                 .then(({ data }) => {
-                    ctx.commit("setBooks", data.filter((book,index)=>index<ctx.state.page*5));
+                    ctx.commit("setBooks", {
+                        books: data.filter((book,index)=>index<ctx.state.page*5),
+                        length: data.length
+                    });
                 })
                 .catch(e => {
                     console.log("some trouble " + e.message)
@@ -41,10 +44,10 @@ export const store = new Vuex.Store({
         },
     },
     getters: {
-        books: state => state.books,
+        books: state => state.books && state.books.books,
         cart: state => state.cart,
         cartCount: state => state.cart.length,
         cartShow: state => state.cartShow,
-        loadShow: state=> state.page<5 && true,
+        loadShow: state=> state.books && state.books.books.length < state.books.length && true,
     }
 });
