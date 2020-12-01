@@ -17,6 +17,10 @@
         margin: 15px auto;
         display: block;
     }
+    &.filter-by{
+        background-color: #d4d4d4;
+        padding: 2px 9px;
+    }
 
     &:hover{
         background-color: rgba(70, 93, 114, 0.185)
