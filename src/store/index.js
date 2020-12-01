@@ -28,8 +28,8 @@ export const store = new Vuex.Store({
             axios.get("/books.json").then(({ data }) => {
                 ctx.commit("setBooks", {
                     books: data.filter(book => {
-                        return book.title.toLowerCase().includes(searchText.toLowerCase()) || 
-                        book.author.toLowerCase().includes(searchText.toLowerCase())
+                        return book.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                            book.author.toLowerCase().includes(searchText.toLowerCase())
                     }),
                 });
             })
@@ -37,8 +37,33 @@ export const store = new Vuex.Store({
                     console.log("some trouble " + e.message)
                 })
         },
+        filter: (ctx, filterBy) => {
+            axios.get("/books.json").then(({ data }) => {
+                ctx.commit("setBooks", {
+                    books: data.sort((book, nextBook) => {
+                        switch (filterBy) {
+                            case 'title':
+                                return (book.title.toLowerCase() > nextBook.title.toLowerCase() ? 1 : -1);
+                                break;
+                            case 'author':
+                                return (book.author.toLowerCase() > nextBook.author.toLowerCase() ? 1 : -1);
+                                break;
+                            case 'price':
+                                return book.price - nextBook.price;
+                                break;
+                        }
+                    })
+                })
+            })
+                .catch(e => {
+                    console.log("some trouble " + e.message)
+                })
+        },
         pushItem: (ctx, book) => {
             ctx.commit("pushItem", book);
+        },
+        clearCart: ctx=>{
+            ctx.commit("clearCart");
         },
         cartToggle: ctx => {
             ctx.commit("cartToggle");
@@ -55,8 +80,6 @@ export const store = new Vuex.Store({
         pushItem: (state, payload) => {
             let index = state.cart.findIndex(item => item.id == payload.id);
 
-
-            console.log(index == true);
             if (index != -1) {
                 state.cart[index].count++;
             }
@@ -64,6 +87,10 @@ export const store = new Vuex.Store({
                 state.cart.push({ count: 1, ...payload });
             }
 
+        },
+        clearCart: state=>{
+            state.cart = [];
+            state.cartShow = false;
         },
         cartToggle: (state) => {
             state.cartShow = !state.cartShow;
