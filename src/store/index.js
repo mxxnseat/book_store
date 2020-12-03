@@ -78,7 +78,9 @@ export const store = new Vuex.Store({
             state.page++;
         },
         pushItem: (state, payload) => {
-            let index = state.cart.findIndex(item => item.id == payload.id);
+            let index = state.cart.findIndex(item => item.title == payload.title);
+
+            console.log()
 
             if (index != -1) {
                 state.cart[index].count++;

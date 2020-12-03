@@ -5,19 +5,19 @@
         <div class="book-author">Автор: {{item.author}}</div>
         <div class="book-price">Цена: {{item.price}}₽</div>
 
-        <button @click="add(item)" class="book-button button">Добавить в корзину</button>
+        <button @click="pushItem(item)" class="book-button button">Добавить в корзину</button>
     </div>
 </template>
 
 <script>
+    import {mapActions} from "vuex";
+
     export default {
         props:{
             item: Object,
         },
         methods:{
-            add(item){
-                this.$store.dispatch("pushItem", item);
-            }
+            ...mapActions(['pushItem'])
         }
     }
 </script>
