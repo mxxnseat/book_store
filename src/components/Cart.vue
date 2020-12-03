@@ -8,8 +8,8 @@
             </div>
             <div class="cart-wrapper">
                 <CartItem 
-                    v-for="item of cart"
-                    :key="item.id"
+                    v-for="(item, index) of cart"
+                    :key="index"
                     :item="item"
                 /> 
             </div>

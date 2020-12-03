@@ -98,7 +98,7 @@ export const store = new Vuex.Store({
             state.cartShow = !state.cartShow;
         },
         removeCartItem: (state, payload) => {
-            state.cart = state.cart.filter(item => item.id != payload);
+            state.cart = state.cart.filter(item => item.title != payload);
             if (!state.cart.length) {
                 state.cartShow = false;
             }

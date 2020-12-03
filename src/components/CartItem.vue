@@ -5,7 +5,7 @@
         <div class="cart-item-price">{{item.price}}₽</div>
         <div class="cart-item-count">x{{item.count}}</div>
 
-        <button @click="removeCartItem(item.id)" class="remove-button button">Удалить</button>
+        <button @click="removeCartItem(item.title)" class="remove-button button">Удалить</button>
     </div>
 </template>
 
