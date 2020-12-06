@@ -1,8 +1,18 @@
 .top-bar{
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 50px;
     
+    .search{
+        width: 250px;
+        padding: 5px 0;
+        padding-left: 10px;
+
+        &:focus{
+            outline: none;
+        }
+    }
     .cart{
         position: relative;
         cursor: pointer;
