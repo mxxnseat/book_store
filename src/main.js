@@ -12,5 +12,6 @@ new Vue({
     template: '<App />',
     mounted() {
         this.$store.dispatch('fetchBook');
+        this.$store.dispatch('getCart');
     }
 });

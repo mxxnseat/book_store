@@ -4,6 +4,14 @@ import axios from "axios";
 
 Vue.use(Vuex);
 
+function cartAxios(data){
+    axios({
+        method: "POST",
+        url: "/cart.json",
+        data
+    }).catch(e=>console.log(`Some trouble ${e.message}`));
+}
+
 export const store = new Vuex.Store({
     state: {
         books: null,
@@ -23,6 +31,12 @@ export const store = new Vuex.Store({
                 .catch(e => {
                     console.log("some trouble " + e.message)
                 })
+        },
+        getCart: (ctx)=>{
+            axios.get("/cart.json")
+            .then(({data})=>{
+                ctx.commit("setCart", data);
+            })
         },
         search: (ctx, searchText) => {
             axios.get("/books.json").then(({ data }) => {
@@ -59,8 +73,8 @@ export const store = new Vuex.Store({
                     console.log("some trouble " + e.message)
                 })
         },
-        pushItem: (ctx, book) => {
-            ctx.commit("pushItem", book);
+        pushItem: (ctx, data) => {
+            ctx.commit("pushItem", data);
         },
         clearCart: ctx=>{
             ctx.commit("clearCart");
@@ -77,22 +91,29 @@ export const store = new Vuex.Store({
             state.books = payload;
             state.page++;
         },
+        setCart: (state, payload)=>{
+            state.cart = [...payload];
+        },
         pushItem: (state, payload) => {
-            let index = state.cart.findIndex(item => item.title == payload.title);
+            const find = state.cart.findIndex(item=>item.title === payload.title);
 
-            console.log()
-
-            if (index != -1) {
-                state.cart[index].count++;
+            if(find != -1)
+            {
+                state.cart[find].count++
+            }else{
+                payload.count = 1;
+                state.cart.push(payload);
             }
-            else {
-                state.cart.push({ count: 1, ...payload });
-            }
 
+            const data = state.cart;
+
+            cartAxios(data);
         },
         clearCart: state=>{
             state.cart = [];
             state.cartShow = false;
+
+            cartAxios(state.cart);
         },
         cartToggle: (state) => {
             state.cartShow = !state.cartShow;
@@ -102,12 +123,14 @@ export const store = new Vuex.Store({
             if (!state.cart.length) {
                 state.cartShow = false;
             }
+            
+            cartAxios(state.cart);
         }
     },
     getters: {
         books: state => state.books && state.books.books,
         cart: state => state.cart,
-        cartCount: state => state.cart.length,
+        cartCount: state => Object.keys(state.cart).length,
         cartShow: state => state.cartShow,
         loadShow: state => state.books && state.books.books.length < state.books.length && true,
     }

@@ -10,7 +10,7 @@
         
         <Cart v-if="cartShow" />
         <List />
-        <Load v-if="loadShow"/>
+        <Load v-if="loadShow" />
     </div>
 </template>
 

@@ -1,21 +1,28 @@
+const express = require("express");
 const fs = require("fs");
-const http = require("http");
+const bodyParser = require("body-parser");
+const app = express();
 
-const server = http.createServer((req, res) => {
+app.use(express.static("./public"));
+app.use(bodyParser.json());
 
-    const publicPath = './public';
+app.listen(1234, ()=>{
+    console.log("server started successfully");
+});
 
-    let body = null;
-    try {
-        body = fs.readFileSync(`${publicPath}${req.url}`);
-    } catch (e) {
-        console.log(e)
-        body = fs.readFileSync(`${publicPath}/index.html`);
-    }
+app.post("/cart.json", (req,res)=>{
+    const filePath = './public/cart.json';
 
-    res.end(body);
-})
+    console.log(req.body);
 
+    fs.readFile(filePath, "utf-8", (err,data)=>{
+        let list = req.body;
 
-const port = process.env.PORT || 3000;
-server.listen(port);
+        fs.writeFile(filePath, JSON.stringify(list), (err, data)=>{
+            if(err){
+                console.log(err);
+            }
+            res.send(data);
+        })
+    });
+});
